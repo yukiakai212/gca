@@ -78,6 +78,7 @@ interface ParsedGithubUrl {
   branch?: string;
   filepath?: string;
   protocol?: string;
+  url: string;
 }
 
 export type ContributionAPI = {

@@ -3,8 +3,10 @@ export async function runDrawCommand(opts: DrawOptions) {
   const git = new GitAPI(os.name, opts.url, os.tempDir());
   const gca = new GcaStateManager(git.workingDir);
   await git.clone();
-  if (!git.isRepoEmpty() && !opts.force) throw new Error('Repository is not empty. Use --force to overwrite.');
-  if (!gca.exists() && !opts.base && !git.isRepoEmpty()) throw new Error('Missing .gca.json or --base option. Cannot determine commit base.');
+  if (!git.isRepoEmpty() && !opts.force)
+    throw new Error('Repository is not empty. Use --force to overwrite.');
+  if (!gca.exists() && !opts.base && !git.isRepoEmpty())
+    throw new Error('Missing .gca.json or --base option. Cannot determine commit base.');
   if (gca.exists()) {
     const gcaState = gca.load();
     opts = { ...gcaState, ...opts };
