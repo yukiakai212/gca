@@ -33,6 +33,7 @@ export interface ContributionArtOptions {
 }
 export interface GenerateCommitArtOptions {
   base: number;
+  clampMax: number;
   endDate: Date;
   rng: () => number;
 }
@@ -40,6 +41,12 @@ export interface CommitDay {
   date: Date;
   commits: number;
   level: CommitLevel;
+}
+
+export interface ContributionStats {
+  commitsPerDay: number[]; // [0,3,5,1,...] (365)
+  levels: number[]; // [0,1,3,2,...] (365)
+  maxCommits: number;
 }
 
 export interface ContrastGuardResult {
@@ -52,32 +59,55 @@ export interface ArtEngineOptions {
   image: string;
   url: string;
   endDate: Date;
-  seed: string;
+  seed: string | number;
 }
-export interface DrawOptions {
-  image: string;
+export interface CliOptions {
+  image?: string;
   url: string;
   force?: boolean;
-  overwrite?: boolean;
   base?: number;
   seed?: string;
   dryRun?: boolean;
+  printMatrix?: boolean;
   endDate?: string;
+  fromGca?: boolean;
+  cleanWorkdir?: boolean;
+  verbose?: boolean;
+  quiet?: boolean;
+  noSaveGca?: boolean;
 }
-export interface GcaState {
-  version: number;
-  seed: string;
+export interface GcaCommitDay {
+  date: string; // ISO yyyy-mm-dd
+  commits: number;
+}
+export interface RuntimeMeta {
+  base: number;
+  seed: number | string;
+  endDate: Date;
+  createdAt: Date;
+  generator: 'dominant-smart';
+}
+
+export interface GcaMeta {
+  seed: string | number;
   base: number;
   endDate: string;
   createdAt: string;
+  generator: 'dominant-smart';
 }
-interface ParsedGithubUrl {
+export interface GcaArt {
+  format: 'commit-days';
+  days: GcaCommitDay[];
+}
+export interface GcaState {
+  version: number;
+  meta: GcaMeta;
+  art: GcaArt;
+}
+export interface ParsedGithubUrl {
   owner: string;
   name: string;
   repo: string; // `${owner}/${name}`
-  branch?: string;
-  filepath?: string;
-  protocol?: string;
   url: string;
 }
 

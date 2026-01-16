@@ -1,9 +1,13 @@
-import got from 'got';
 import parseGithubUrl from 'parse-github-url';
+import { getContribution } from 'github-contribution-api';
+import { ParsedGithubUrl, ContributionAPI, NestedResponseAPI } from '../types.js';
 
 export const createGithubContribution = (repo: ParsedGithubUrl) => {
-  const BASE_GITHUB_CONTRIBUTION_API: string = 'https://github-contributions-api.jogruber.de';
-
+  function startOfDay(d: Date): Date {
+    const x = new Date(d);
+    x.setHours(0, 0, 0, 0);
+    return x;
+  }
   const getContributionWindow = (endDate: Date) => {
     const end = startOfDay(endDate);
     const start = new Date(end);
@@ -18,28 +22,31 @@ export const createGithubContribution = (repo: ParsedGithubUrl) => {
       d.setDate(d.getDate() + 1);
     }
   }
-  const getContributionForDate = (data: NestedResponseAPI, date: Date): number => {
+  const getContributionForDate = (data: NestedResponseAPI, date: Date): ContributionAPI => {
+    const defaultContribution: ContributionAPI = {
+      date: date.toISOString().slice(0, 10),
+      count: 0,
+      level: 0,
+    };
     const y = date.getFullYear();
     const m = date.getMonth() + 1;
     const d = date.getDate();
 
-    return data.contributions[y]?.[m]?.[d]?.count ?? 0;
+    return data.contributions[y]?.[m]?.[d] ?? defaultContribution;
   };
-  const getContributionMatrix = (endDate: Date): number[] => {
-    const url: string = new URL(`v4/${repo.owner}`, BASE_GITHUB_CONTRIBUTION_API);
+  const getContributionMatrix = async (endDate: Date): Promise<ContributionAPI[]> => {
     const { start } = getContributionWindow(endDate);
     const years = new Set<number>();
     years.add(endDate.getFullYear());
     years.add(start.getFullYear());
-    url.searchParams.set('format', 'nested');
-    for (const year of years) {
-      url.searchParams.append('y', year);
-    }
-    const data = await got<NestedResponseAPI>(url.toString()).json();
+    const data = await getContribution(repo.owner, {
+      format: 'nested',
+      year: [...years],
+    });
     if (!data.contributions) throw new Error('Cant fetch contribution');
-    const result: number[] = [];
-    for (const date of this.iterateDays(start, endDate)) {
-      result.push(this.getContributionForDate(data, date));
+    const result: ContributionAPI[] = [];
+    for (const date of iterateDays(start, endDate)) {
+      result.push(getContributionForDate(data, date));
     }
     return result;
   };

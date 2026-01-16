@@ -1,4 +1,6 @@
-import { ContributionPixel, ContributionArtOptions } from './types.js';
+import { ContributionPixel, ContributionArtOptions } from '../types.js';
+import { pngToCommitMatrix } from './pngToCommitMatrix.js';
+import { mapPixelToDate } from './mapPixelToDate.js';
 
 /**
  * PNG → GitHub contribution pixels

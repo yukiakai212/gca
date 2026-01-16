@@ -1,19 +1,32 @@
+import {
+  ContributionArtOptions,
+  ArtEngineOptions,
+  CommitDay,
+  GenerateCommitArtOptions,
+  GcaMeta,
+} from '../types.js';
+import { createSeededRng } from './rng.js';
+import { pngToContributionPixels } from './pngToContributionPixels.js';
+import { generateCommitPlan } from './generateCommitPlan.js';
+
 export const createArtEngine = (options: ArtEngineOptions) => {
-  const generate = (): Promise<CommitDay[]> => {
-    const rng = createSeededRng(this.options.seed);
+  const generate = async (): Promise<CommitDay[]> => {
+    const rng = createSeededRng(options.seed);
     const contributionArtOptions: ContributionArtOptions = {
       rng,
       weeks: 52,
-      now: this.options.endDate,
+      now: options.endDate,
     };
     const generateCommitArtOptions: GenerateCommitArtOptions = {
-      base: this.options.base,
-      endDate: this.options.endDate,
+      base: options.base,
+      endDate: options.endDate,
       rng,
+      clampMax: 40,
     };
-    const pixels = await pngToContributionPixels(this.options.image, contributionArtOptions);
+    const pixels = await pngToContributionPixels(options.image, contributionArtOptions);
     const commitDays: CommitDay[] = generateCommitPlan(pixels, generateCommitArtOptions);
     return commitDays;
   };
+
   return { generate };
 };

@@ -29,9 +29,9 @@ jobs:
       - name: Run tests
         run: npm run test
       - name: Install sandbox
-        run: npm run build && npx sandbox
+        run: npm run build # && npx sandbox
       - name: Upload coverage reports to Codecov
         uses: codecov/codecov-action@v5
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
-          slug: yukiakai212/logger
+          slug: yukiakai212/gca

@@ -1,5 +1,5 @@
 import sharp from 'sharp';
-import { CommitLevelMatrix } from './types.js';
+import { CommitLevelMatrix, CommitLevel } from '../types.js';
 
 /**
  * Convert PNG image to GitHub-style contribution matrix (7 x 52)
@@ -50,7 +50,7 @@ export async function pngToCommitMatrix(
 /**
  * Map grayscale (0..255) to level 0..4
  */
-function quantizeTo5Levels(value: number): number {
+function quantizeTo5Levels(value: number): CommitLevel {
   // clamp
   const v = Math.max(0, Math.min(255, value));
 

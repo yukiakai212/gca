@@ -1,13 +1,20 @@
-import { CommitLevelMatrix, GenerateCommitArtOptions } from './types.js';
+import {
+  CommitScaleOptions,
+  GenerateCommitArtOptions,
+  ContributionPixel,
+  CommitDay,
+} from '../types.js';
+import { levelToCommitCount } from './levelToCommitCount.js';
 
 export function generateCommitPlan(
   pixels: ContributionPixel[],
   options: GenerateCommitArtOptions,
 ): CommitDay[] {
-  const { base, endDate, rng } = options;
+  const { base, endDate, rng, clampMax } = options;
   const commitScaleOptions: CommitScaleOptions = {
     base,
     rng,
+    clampMax,
     jitter: true,
   };
 
@@ -21,5 +28,5 @@ export function generateCommitPlan(
     });
   }
 
-  return days;
+  return result;
 }

@@ -1,9 +1,9 @@
-import { CommitLevelMatrix, ContrastGuardResult } from './types.js';
+import { CommitLevelMatrix, ContrastGuardResult } from '../types.js';
 
 export function applyContrastGuard(
   base: number,
-  levelMatrix: CommitLevelMatrix,
-  boost,
+  levelMatrix: number[], // CommitLevelMatrix
+  boost: number,
 ): ContrastGuardResult {
   const flat = levelMatrix.flat();
   const darkPixels = flat.filter((v) => v <= 1).length;

@@ -1,4 +1,4 @@
-import { CommitLevel, CommitScaleOptions } from './types.js';
+import { CommitLevel, CommitScaleOptions } from '../types.js';
 
 export function levelToCommitCount(level: CommitLevel, options: CommitScaleOptions): number {
   const { base, jitter = true, clampMax, rng = Math.random } = options;

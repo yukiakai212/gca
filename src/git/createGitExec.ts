@@ -2,6 +2,7 @@ import fs from 'fs';
 import path from 'path';
 import { execSync } from 'child_process';
 import parseGithubUrl from 'parse-github-url';
+import { ParsedGithubUrl } from '../types.js';
 
 export const createGitExec = (repo: ParsedGithubUrl, mountDir: string) => {
   const workingDir: string = path.join(mountDir, repo.name);
@@ -42,6 +43,11 @@ export const createGitExec = (repo: ParsedGithubUrl, mountDir: string) => {
     }
   };
 
+  const isWorkdirEmpty = (): boolean => {
+    if (!fs.existsSync(workingDir)) return true;
+    return fs.readdirSync(workingDir).length === 0;
+  };
+
   /* ---------------- actions ---------------- */
 
   const clone = (force = false) => {
@@ -52,7 +58,7 @@ export const createGitExec = (repo: ParsedGithubUrl, mountDir: string) => {
       fs.rmSync(workingDir, { recursive: true, force: true });
     }
 
-    execSync(`git clone ${this.url}`, {
+    execSync(`git clone ${repo.url}`, {
       cwd: mountDir,
       stdio: 'inherit',
     });
@@ -63,7 +69,7 @@ export const createGitExec = (repo: ParsedGithubUrl, mountDir: string) => {
 
     exec('git add -A');
 
-    execSync(`git commit -m "${message}"`, {
+    execSync(`git commit -m "${message}" --allow-empty`, {
       cwd: workingDir,
       env: {
         ...process.env,
@@ -75,10 +81,25 @@ export const createGitExec = (repo: ParsedGithubUrl, mountDir: string) => {
   };
 
   const push = (remote = 'origin', branch = 'main') => {
-    execSync(`git push ${remote} ${branch}`, {
+    execSync(`git push ${remote} ${branch} -f`, {
       cwd: workingDir,
       stdio: 'inherit',
     });
+  };
+  const checkout = (branch = 'main') => {
+    execSync(`git checkout -B ${branch}`, {
+      cwd: workingDir,
+      stdio: 'inherit',
+    });
+  };
+  const removeWorkdir = () => {
+    if (!fs.existsSync(workingDir)) return;
+
+    if (workingDir.length < 10) {
+      throw new Error('Refusing to remove suspicious path');
+    }
+
+    fs.rmSync(workingDir, { recursive: true, force: true });
   };
   return {
     workingDir,
@@ -87,5 +108,8 @@ export const createGitExec = (repo: ParsedGithubUrl, mountDir: string) => {
     clone,
     commit,
     push,
+    checkout,
+    isWorkdirEmpty,
+    removeWorkdir,
   };
 };

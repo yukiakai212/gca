@@ -1,6 +1,8 @@
+import { DominantSmartOptions, DominantSmartResult } from '../types.js';
+
 export function dominantSmartBase(
   commitsPerDay: number[],
-  options: DominantSmartOptions = {},
+  options: DominantSmartOptions,
 ): DominantSmartResult {
   const { percentile = 95, minBase = 12, maxBase = 40, contrastBoost = 4 } = options;
 
