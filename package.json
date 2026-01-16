@@ -1,5 +1,5 @@
 {
-  "name": "gca.js",
+  "name": "gcajs",
   "version": "1.0.0-beta",
   "description": "Generate GitHub contribution art from images. Draw pixel art on your GitHub contribution graph using commits",
   "type": "module",
