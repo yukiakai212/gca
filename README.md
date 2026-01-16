@@ -1,5 +1,5 @@
 
-# gcajs
+# @yukiakai/gca
 
 [![NPM Version][npm-version-image]][npm-url]
 [![NPM Downloads][npm-downloads-image]][npm-downloads-url]
@@ -10,7 +10,7 @@
 > Generate GitHub contribution art from images
 > Draw pixel art on your GitHub contribution graph using commits.
 
-`gcajs` is a CLI tool that converts a PNG image into a GitHub contribution graph by generating commits on specific dates.
+`@yukiakai/gca` is a CLI tool that converts a PNG image into a GitHub contribution graph by generating commits on specific dates.
 It supports deterministic generation, dry-run preview, replay from state, and safe overwrite protections.
 
 ---
@@ -40,7 +40,7 @@ It supports deterministic generation, dry-run preview, replay from state, and sa
 Global install:
 
 ```bash
-npm install -g gcajs
+npm install -g @yukiakai/gca
 
 gca <repo> [options]
 ```
@@ -48,7 +48,7 @@ gca <repo> [options]
 Or install locally:
 
 ```bash
-npm install gcajs
+npm install @yukiakai/gca
 ```
 
 ---
@@ -212,10 +212,10 @@ MIT © [Yuki Akai](https://github.com/yukiakai212)
 
 ---
 
-[npm-downloads-image]: https://badgen.net/npm/dm/gcajs
-[npm-downloads-url]: https://www.npmjs.com/package/gcajs
-[npm-url]: https://www.npmjs.com/package/gcajs
-[npm-version-image]: https://badgen.net/npm/v/gcajs
+[npm-downloads-image]: https://badgen.net/npm/dm/@yukiakai/gca
+[npm-downloads-url]: https://www.npmjs.com/package/@yukiakai/gca
+[npm-url]: https://www.npmjs.com/package/@yukiakai/gca
+[npm-version-image]: https://badgen.net/npm/v/@yukiakai/gca
 [github-build-url]: https://github.com/yukiakai212/gca/actions/workflows/build.yml/badge.svg
 [github-url]: https://github.com/yukiakai212/gca/
 [codecov-image]: https://codecov.io/gh/yukiakai212/gca/branch/main/graph/badge.svg
